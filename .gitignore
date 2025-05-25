@@ -1,0 +1,20 @@
+# 環境変数の除外
+.env
+
+# 仮想環境の除外
+venv/
+
+# Pythonキャッシュファイルを無視
+__pycache__/
+*.py[cod]
+
+# IDE関連の設定ファイルを無視
+.vscode/
+.idea/
+
+# ログファイルを無視
+*.log
+
+# OS固有のファイルを無視
+.DS_Store
+Thumbs.db
