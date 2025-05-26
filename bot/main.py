@@ -9,7 +9,7 @@ import tempfile
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
-default_channel_id = int(os.getenv("DEFAULT_READ_CHANNEL_ID"))
+default_channel_id = os.getenv("DEFAULT_READ_CHANNEL_ID")
 read_target_channel_id = default_channel_id  # 初期読み上げチャンネル
 
 intents = discord.Intents.default()
