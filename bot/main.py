@@ -8,7 +8,7 @@ from gtts import gTTS
 import tempfile
 
 load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("DISCORD_TOKEN","") # デフォルト値を空文字列に設定することでコンソールエラーを回避
 default_channel_id = os.getenv("DEFAULT_READ_CHANNEL_ID")
 read_target_channel_id = default_channel_id  # 初期読み上げチャンネル
 
@@ -111,6 +111,7 @@ async def on_voice_state_update(member, before, after):
 
 
 def start_bot():
+    print(f"TOKEN: {TOKEN}")  # デバッグ用
     bot.run(TOKEN)
 
 if __name__ == "__main__":
