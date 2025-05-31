@@ -15,6 +15,11 @@ async def on_message(message):
     if not message.guild:
         return
 
+    # テキスト以外のメッセージをスキップ
+    if not message.content.strip():
+        print(f"⚠️ テキスト以外のメッセージをスキップ: {message}")
+        return
+
     read_channel_id = state.get_read_channel(message.guild.id)
     read_channel = message.guild.get_channel(read_channel_id) if read_channel_id else None
     if read_channel:
@@ -36,7 +41,7 @@ async def on_message(message):
 
     # テキストを読み上げ
     try:
-        await tts.speak_text(message.content, vc) # 音声再生
+        await tts.speak_text(message.content, vc)  # 音声再生
     except Exception as e:
         print(f"⚠️ 音声再生中にエラーが発生: {e}")
         await message.channel.send("⚠️ メッセージの読み上げ中にエラーが発生しました！")
