@@ -25,6 +25,9 @@ class ChangeHandler(FileSystemEventHandler):
             self.process.kill()
             self.process = self.start_bot()
 
+    def stop_bot(self):
+        print("🛑 Botを停止します...")
+        self.process.kill()
 
 
 def start():
@@ -40,5 +43,5 @@ def start():
     except KeyboardInterrupt:
         print("🛑 停止します")
         observer.stop()
-        event_handler.process.kill()
+        event_handler.stop_bot()
     observer.join()
