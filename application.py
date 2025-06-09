@@ -1,8 +1,4 @@
-# application.py の例（watcherを起動）
-import subprocess
-import sys
-import os
+from bot.bot import run_bot
 
-# ファイル監視などを続けて実行
-from watcher import watcher
-watcher.start()
+if __name__ == "__main__":
+    run_bot()
