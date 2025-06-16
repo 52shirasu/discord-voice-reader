@@ -7,12 +7,21 @@ class TTSQueue:
     def __init__(self):
         self.queues = {}   # {guild_id: asyncio.Queue}
         self.playing = {}  # {guild_id: bool}
+        self.queue_limit = 2            # 閾値
+        self.truncate_length = 10       # 文字制限
 
     async def add(self, guild_id: int, text: str, vc: discord.VoiceClient):
         """読み上げテキストを再生キューに追加"""
         if guild_id not in self.queues:
             self.queues[guild_id] = asyncio.Queue()
-        await self.queues[guild_id].put((text, vc))
+        
+        queue = self.queues[guild_id]
+
+        # ⚠️ 待機列が閾値以上 & 文字数が制限以上なら省略
+        if queue.qsize() >= self.queue_limit and len(text) > self.truncate_length:
+            text = text[:self.truncate_length] + "…以下略"
+
+        await queue.put((text, vc))
 
         if not self.playing.get(guild_id, False):
             asyncio.create_task(self._play_loop(guild_id))
