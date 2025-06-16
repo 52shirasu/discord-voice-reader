@@ -1,14 +1,14 @@
 from gtts import gTTS
-import tempfile
+import uuid
 import os
-import discord
-import asyncio
 
-async def speak_text(text, vc):
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
-        tts = gTTS(text=text, lang='ja')
-        tts.save(fp.name)
-        source = discord.FFmpegPCMAudio(fp.name)
-        vc.play(source, after=lambda e: os.remove(fp.name))
-        while vc.is_playing():
-            await asyncio.sleep(1)
+def generate_audio(text: str) -> str:
+    """テキストをgTTSで音声ファイルに変換して、ファイルパスを返す"""
+    path = f"temp_{uuid.uuid4().hex}.mp3"
+    try:
+        tts = gTTS(text=text, lang="ja")
+        tts.save(path)
+    except Exception as e:
+        print(f"⚠️ gTTS生成エラー: {e}")
+        raise e
+    return path

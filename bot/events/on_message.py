@@ -1,5 +1,8 @@
 from bot.instance import bot
 from bot.utils import tts, state
+from bot.utils.tts_queue import TTSQueue  # 再生キュー管理を追加
+
+tts_queue = TTSQueue()  # グローバルインスタンス生成
 
 @bot.event
 async def on_message(message):
@@ -39,9 +42,9 @@ async def on_message(message):
         await message.channel.send("⚠️ Botがボイスチャンネルに接続されていません。`.join` コマンドで接続してください！")
         return
 
-    # テキストを読み上げ
+    # 読み上げをキューに追加
     try:
-        await tts.speak_text(message.content, vc)  # 音声再生
+        await tts_queue.add(message.guild.id, message.content, vc)
     except Exception as e:
-        print(f"⚠️ 音声再生中にエラーが発生: {e}")
+        print(f"⚠️ 読み上げ中にエラーが発生: {e}")
         await message.channel.send("⚠️ メッセージの読み上げ中にエラーが発生しました！")
